@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
+    "pn532.js": "^0.1.19",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
