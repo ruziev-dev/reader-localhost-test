@@ -2,13 +2,14 @@
 	"name": "utis-nfc-reader",
 	"version": "1.0.0",
 	"main": "dist/main.js",
+	"bin": "dist/main.js",
 	"scripts": {
 		"build": "tsc",
 		"dev": "nodemon",
 		"start": "node dist/main.js",
-		"build-linux": "pkg dist/main.js --target linux-x64",
-		"build-macos": "pkg dist/main.js --target darwin-x64",
-		"build-windows": "pkg dist/main.js --target win-x64"
+		"build-linux": "pkg dist/main.js --t node22-linux-x64 --output build/linux-app",
+		"build-macos": "pkg dist/main.js -t node22-macos-arm64 --output build/mac-app",
+		"build-windows": "pkg dist/main.js -t node22-win-x64 --output build/win-app"
 	},
 	"dependencies": {
 		"@tockawa/nfc-pcsc": "^0.9.3",
@@ -17,11 +18,23 @@
 		"npm": "^11.6.1",
 		"ws": "^8.17.0"
 	},
+	"pkg": {
+		"scripts": "dist/main.js",
+		"assets": [
+			"node_modules/@pokusew/pcsclite/build/Release/pcsclite.node"
+		],
+		"targets": [
+			"node22-linux-x64",
+			"node22-macos-arm64",
+			"node22-win-x64"
+		],
+		"outputPath": "build"
+	},
 	"devDependencies": {
 		"@types/node": "^20.11.5",
 		"@types/ws": "^8.5.10",
+		"@yao-pkg/pkg": "^6.7.0",
 		"nodemon": "^3.1.0",
-		"pkg": "^5.8.1",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.3.3"
 	}
