@@ -1,0 +1,26 @@
+image: node:20
+
+stages:
+  - build
+
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  - npm install
+
+build-linux:
+  stage: build
+  script:
+    - npm run build-linux
+
+build-macos:
+  stage: build
+  script:
+    - npm run build-macos
+
+build-windows:
+  stage: build
+  script:
+    - npm run build-windows
