@@ -1,24 +1,27 @@
 {
-  "name": "websocket-server",
-  "version": "1.0.0",
-  "description": "Node.js WebSocket server with TypeScript",
-  "main": "dist/server.js",
-  "scripts": {
-    "build": "tsc",
-    "dev": "nodemon",
-    "start": "node dist/server.js"
-  },
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "nfc-pcsc": "^0.8.1",
-    "ws": "^8.17.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.11.5",
-    "@types/ws": "^8.5.10",
-    "nodemon": "^3.1.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
-  }
+	"name": "websocket-server",
+	"version": "1.0.0",
+	"description": "Node.js WebSocket server with TypeScript",
+	"main": "dist/main.js",
+	"scripts": {
+		"build": "tsc",
+		"dev": "nodemon",
+		"start": "node dist/main.js"
+	},
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"@tockawa/nfc-pcsc": "^0.9.3",
+		"i": "^0.3.7",
+		"node-systray-v2": "github:Edgar-P-yan/node-systray-v2",
+		"npm": "^11.6.1",
+		"ws": "^8.17.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20.11.5",
+		"@types/ws": "^8.5.10",
+		"nodemon": "^3.1.0",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.3.3"
+	}
 }
