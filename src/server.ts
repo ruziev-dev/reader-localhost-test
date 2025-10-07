@@ -7,7 +7,7 @@ import {
 	Reader,
 	controlCode,
 } from "pcsc-mini"
-export const PORT = 8080
+export const PORT = 5002
 export const wss = new WebSocketServer({ port: PORT })
 
 export const RunServerAndNFCListener = (
