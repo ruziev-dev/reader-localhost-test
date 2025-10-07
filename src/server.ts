@@ -1,20 +1,57 @@
 import { WebSocketServer } from "ws"
-import PCSC from "@tockawa/nfc-pcsc"
-import { CardReader } from "@tockawa/nfc-pcsc/dist/types/src/utils/readers/Reader.typings"
+import {
+	CardDisposition,
+	CardMode,
+	ReaderStatus,
+	Client,
+	Reader,
+	controlCode,
+} from "pcsc-mini"
 export const PORT = 8080
 export const wss = new WebSocketServer({ port: PORT })
-
-const nfc = new PCSC()
 
 export const RunServerAndNFCListener = (
 	updateClients: (clients: number) => void,
 	updateNFCListener: (name?: string) => void
 ) => {
-	setTimeout(() => {
-		updateNFCListener((Object.values(nfc.readers)?.[0] as CardReader)?.name)
-	}, 1000)
+	const client = new Client()
+		.on("reader", onReader)
+		.on("error", e => {
+			console.log("[ERROR] ", e)
+			client.stop()
+			client.start()
+		})
+		.start()
 
-	nfc.on("reader", reader => {
+	function onReader(reader: Reader) {
+		reader.on("change", async status => {
+			console.log(status)
+			setTimeout(() => {
+				updateNFCListener(reader.name())
+			}, 1000)
+
+			if (!status.has(ReaderStatus.PRESENT)) return
+			if (status.hasAny(ReaderStatus.MUTE, ReaderStatus.IN_USE)) return
+
+			const card = await reader.connect(CardMode.SHARED)
+			console.log(`state: ${await card.state()}`)
+
+			//const resTx = await card.transmit(Uint8Array.of(0xca, 0xfe, 0xf0, 0x0d))
+			//console.log(resTx)
+
+			const codeFeatures = controlCode(3400)
+			const features = await card.control(codeFeatures)
+			console.log("features", features)
+
+			await card.disconnect(CardDisposition.RESET)
+			//client.stop()
+			//process.exit(0)
+		})
+
+		reader.on("disconnect", updateNFCListener)
+	}
+
+	/* nfc.on("reader", reader => {
 		updateNFCListener(reader.name)
 		console.log(`NFC reader detected: ${reader.name}`)
 
@@ -49,7 +86,7 @@ export const RunServerAndNFCListener = (
 
 	nfc.on("error", (err: any) => {
 		console.error(`NFC error: ${err.message}`)
-	})
+	}) */
 
 	wss.on("connection", ws => {
 		console.log("New client connected")
