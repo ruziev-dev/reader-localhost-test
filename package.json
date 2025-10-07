@@ -34,6 +34,7 @@
 		"outputPath": "build"
 	},
 	"devDependencies": {
+		"@appthreat/caxa": "^1.0.12",
 		"@types/node": "^20.11.5",
 		"@types/ws": "^8.5.10",
 		"@yao-pkg/pkg": "^6.7.0",

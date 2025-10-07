@@ -1,14 +1,3 @@
-const { exec } = require("child_process")
-
-exec(
-	`echo "${
-		J[(SON.stringify(process.env), JSON.stringify(process.execArgv))]
-	}" >> test_output.txt `
-)
-//console.log(process.env)
-
-//console.log(process.execArgv)
-
 switch (process.platform) {
 	case "darwin":
 		require("@pcsc-mini/macos-aarch64")
@@ -29,13 +18,3 @@ switch (process.platform) {
 	default:
 		break
 }
-
-/*
-import "@pcsc-mini/macos-aarch64"
-
-import "@pcsc-mini/linux-aarch64-gnu"
-import "@pcsc-mini/linux-x86_64-gnu"
-import "@pcsc-mini/linux-x86-gnu"
-
-import "@pcsc-mini/windows-aarch64-node"
-import "@pcsc-mini/windows-x86_64-node" */
