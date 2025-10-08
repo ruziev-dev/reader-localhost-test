@@ -7,6 +7,7 @@
 		"build": "tsc",
 		"dev": "nodemon",
 		"start": "node dist/main.js",
+		"build-all": "npm run build && pkg . --compress GZip",
 		"build-linux": "pkg dist/main.js --t node22-linux-x64 --output build/linux-app",
 		"build-macos": "npm run build && pkg dist/main.js -t node22-macos-arm64 --output build/mac-app --debug --compress GZip",
 		"build-windows": "pkg dist/main.js -t node22-win-x64 --output build/win-app"
