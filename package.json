@@ -7,7 +7,7 @@
 		"build": "tsc",
 		"dev": "nodemon",
 		"start": "node dist/main.js",
-		"build-all": "npm run build && pkg . --compress GZip",
+		"build-all": "npm run build && export PKG_IGNORE_TAG=true && pkg . --compress GZip",
 		"build-linux": "pkg dist/main.js --t node22-linux-x64 --output build/linux-app",
 		"build-macos": "npm run build && pkg dist/main.js -t node22-macos-arm64 --output build/mac-app --debug --compress GZip",
 		"build-windows": "pkg dist/main.js -t node22-win-x64 --output build/win-app"
@@ -28,6 +28,9 @@
 		"scripts": [
 			"dynamic-requires.js",
 			"dist/**/*"
+		],
+		"assets": [
+			"node_modules/node-systray-v2/traybin/**/*"
 		],
 		"ignore": [],
 		"targets": [
