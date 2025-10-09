@@ -1,23 +1,13 @@
-import { SysTray } from "node-systray-v2"
+//import { SysTray } from "node-systray-v2"
 import { icoIconBase64 } from "./assets/ico-icon"
 import { pngIconBase64 } from "./assets/png-icon"
 import { RunServerAndNFCListener } from "./server"
 
 RunServerAndNFCListener(
-	clients => console.log(`Clients: ${clients}`),
-	name => console.log(`New reader connected: ${name}`)
+	clients => console.log(`clients: ${clients}`),
+	name => console.log(`ReaderName: ${name}`)
 )
 /* 
-try {
-	const files = fs.readdirSync(assets_path)
-	console.log(`[assets_path]: Files in ${assets_path}:`)
-	files.forEach(file => {
-		console.log(file)
-	})
-} catch (err) {
-	console.error(`Error reading directory: ${err}`)
-}
-
 export const Systray = new SysTray({
 	menu: {
 		// you should using .png icon in macOS/Linux, but .ico format in windows
@@ -92,4 +82,5 @@ Systray.onReady(() => {
 	})
 	RunServerAndNFCListener(updateClients, updateNFCListener)
 })
+
  */
