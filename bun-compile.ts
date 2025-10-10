@@ -30,14 +30,14 @@ const platforms = [
 const results = platforms.map(
 	async platform =>
 		await Bun.build({
-			entrypoints: ["./src/main.ts"],
-			//entrypoints: ["./dist/main.js"],
+			//entrypoints: ["./src/main.ts"],
+			entrypoints: ["./dist/main.js"],
 			outdir: "./build",
 			compile: platform,
 			packages: "bundle",
 			env: "inline",
 			plugins: [],
-			minify: true, // default false
+			//minify: true, // default false
 		})
 )
 

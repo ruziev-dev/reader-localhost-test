@@ -12,24 +12,13 @@
 		"bun-compile": "bun bun-compile.ts"
 	},
 	"dependencies": {
-		"@pcsc-mini/linux-aarch64-gnu": "^0.1.3",
-		"@pcsc-mini/linux-x86_64-gnu": "^0.1.3",
-		"@pcsc-mini/linux-x86-gnu": "^0.1.3",
-		"@pcsc-mini/macos-aarch64": "^0.1.3",
-		"@pcsc-mini/windows-aarch64-bun": "^0.1.3",
-		"@pcsc-mini/windows-aarch64-node": "^0.1.3",
-		"@pcsc-mini/windows-x86_64-bun": "^0.1.3",
-		"@pcsc-mini/windows-x86_64-node": "^0.1.3",
 		"node-systray-v2": "github:Edgar-P-yan/node-systray-v2",
-		"npm": "^11.6.1",
-		"pcsc-mini": "^0.1.3",
 		"ws": "^8.17.0"
 	},
 	"devDependencies": {
 		"@types/bun": "^1.2.23",
 		"@types/node": "^20.11.5",
 		"@types/ws": "^8.5.10",
-		"@yao-pkg/pkg": "^6.7.0",
 		"nodemon": "^3.1.0",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.3.3"
