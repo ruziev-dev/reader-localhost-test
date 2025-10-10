@@ -9,7 +9,7 @@ const target = process.env.TARGET_PLATFORM
 	? `${process.platform}-${process.arch}-${abi}`
 	: `${process.platform}-${process.arch}`
 
-console.log({ target })
+console.log({ target, platform: process.platform })
 
 try {
 	switch (target) {
@@ -36,6 +36,12 @@ try {
 			break
 		case "darwin-x64":
 			module.exports = require("./arch/macos-x86_64/addon.node")
+			break
+		case "win32-arm64-node":
+			module.exports = require("./arch/windows-aarch64-node/addon.node")
+			break
+		case "win32-x64-node":
+			module.exports = require("./arch/windows-x86_64-node/addon.node")
 			break
 		case "win32-arm64-bun":
 			module.exports = require("./arch/windows-aarch64-bun/addon.node")
