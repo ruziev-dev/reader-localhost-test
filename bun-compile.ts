@@ -7,10 +7,19 @@ const APP_NAME = "utis-nfc-reader"
 const platforms = [
 	{
 		target: "bun-windows-x64",
+		outfile: `${APP_NAME}-windows-arm64.exe`,
+		execArgv: ["TARGET_PLATFORM=win32-arm64-bun"],
+	},
+	{
+		target: "bun-windows-x64",
 		outfile: `${APP_NAME}-windows-x64.exe`,
 		execArgv: ["TARGET_PLATFORM=win32-x64-bun"],
 	},
-	{ target: "bun-linux-x64", outfile: `${APP_NAME}-linux-x64` },
+	{
+		target: "bun-linux-x64",
+		outfile: `${APP_NAME}-linux-x64`,
+		execArgv: ["TARGET_PLATFORM=linux-x64-glibc"],
+	},
 	{
 		target: "bun-darwin-arm64",
 		outfile: `${APP_NAME}-darwin-arm64`,
@@ -22,12 +31,13 @@ const results = platforms.map(
 	async platform =>
 		await Bun.build({
 			entrypoints: ["./src/main.ts"],
+			//entrypoints: ["./dist/main.js"],
 			outdir: "./build",
 			compile: platform,
 			packages: "bundle",
 			env: "inline",
 			plugins: [],
-			//minify: true, // default false
+			minify: true, // default false
 		})
 )
 

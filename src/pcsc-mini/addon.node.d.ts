@@ -139,7 +139,7 @@ export interface Card {
 	transaction(): Promise<Transaction>
 
 	transmit(
-		protocol: Protocol,
+		protocol?: Protocol,
 		input: Uint8Array,
 		outputBuffer?: ArrayBuffer
 	): Promise<Uint8Array>

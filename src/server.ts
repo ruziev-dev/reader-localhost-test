@@ -1,12 +1,14 @@
 import { WebSocketServer } from "ws"
-import {
+/* import {
 	CardDisposition,
 	CardMode,
 	Client,
 	controlCode,
 	ReaderStatus,
-} from "./pcsc-mini"
-import { Reader } from "./pcsc-mini/reader"
+} from "./pcsc-mini" */
+import { Reader, ReaderStatus } from "./pcsc-mini/reader"
+import { Client } from "./pcsc-mini/client"
+import { CardDisposition, CardMode, controlCode } from "./pcsc-mini/addon.node"
 export const PORT = 5002
 export const wss = new WebSocketServer({ port: PORT })
 

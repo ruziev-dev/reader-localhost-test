@@ -1,86 +1,21 @@
-"use strict"
-var __createBinding =
-	(this && this.__createBinding) ||
-	(Object.create
-		? function (o, m, k, k2) {
-				if (k2 === undefined) k2 = k
-				var desc = Object.getOwnPropertyDescriptor(m, k)
-				if (
-					!desc ||
-					("get" in desc ? !m.__esModule : desc.writable || desc.configurable)
-				) {
-					desc = {
-						enumerable: true,
-						get: function () {
-							return m[k]
-						},
-					}
-				}
-				Object.defineProperty(o, k2, desc)
-		  }
-		: function (o, m, k, k2) {
-				if (k2 === undefined) k2 = k
-				o[k2] = m[k]
-		  })
-var __setModuleDefault =
-	(this && this.__setModuleDefault) ||
-	(Object.create
-		? function (o, v) {
-				Object.defineProperty(o, "default", { enumerable: true, value: v })
-		  }
-		: function (o, v) {
-				o["default"] = v
-		  })
-var __importStar =
-	(this && this.__importStar) ||
-	(function () {
-		var ownKeys = function (o) {
-			ownKeys =
-				Object.getOwnPropertyNames ||
-				function (o) {
-					var ar = []
-					for (var k in o)
-						if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k
-					return ar
-				}
-			return ownKeys(o)
-		}
-		return function (mod) {
-			if (mod && mod.__esModule) return mod
-			var result = {}
-			if (mod != null)
-				for (var k = ownKeys(mod), i = 0; i < k.length; i++)
-					if (k[i] !== "default") __createBinding(result, mod, k[i])
-			__setModuleDefault(result, mod)
-			return result
-		}
-	})()
-Object.defineProperty(exports, "__esModule", { value: true })
-exports.CardStatusFlags =
-	exports.CardState =
-	exports.Card =
-	exports.protocolString =
-	exports.cardStatusString =
-	exports.controlCode =
-	exports.Protocol =
-	exports.CardStatus =
-	exports.CardMode =
-	exports.CardDisposition =
-	exports.attributes =
-	exports.MAX_BUFFER_LEN =
-	exports.MAX_ATR_LEN =
-		void 0
-const pcsc = __importStar(require("./addon.node"))
-exports.MAX_ATR_LEN = pcsc.MAX_ATR_LEN
-exports.MAX_BUFFER_LEN = pcsc.MAX_BUFFER_LEN
-exports.attributes = pcsc.attributes
-exports.CardDisposition = pcsc.CardDisposition
-exports.CardMode = pcsc.CardMode
-exports.CardStatus = pcsc.CardStatus
-exports.Protocol = pcsc.Protocol
-exports.controlCode = pcsc.controlCode
-exports.cardStatusString = pcsc.cardStatusString
-exports.protocolString = pcsc.protocolString
+import * as pcsc from "./addon.node"
+import { type Err, type Transaction } from "./addon.node"
+
+export import MAX_ATR_LEN = pcsc.MAX_ATR_LEN
+export import MAX_BUFFER_LEN = pcsc.MAX_BUFFER_LEN
+
+export { type Err, type Transaction }
+
+export import attributes = pcsc.attributes
+export import CardDisposition = pcsc.CardDisposition
+export import CardMode = pcsc.CardMode
+export import CardStatus = pcsc.CardStatus
+export import Protocol = pcsc.Protocol
+
+export import controlCode = pcsc.controlCode
+export import cardStatusString = pcsc.cardStatusString
+export import protocolString = pcsc.protocolString
+
 /**
  * Represents a connection to an inserted smart card.
  *
@@ -117,11 +52,13 @@ exports.protocolString = pcsc.protocolString
  * }
  * ```
  */
-class Card {
-	#card
-	constructor(card) {
+export class Card {
+	readonly #card: pcsc.Card
+
+	constructor(card: pcsc.Card) {
 		this.#card = card
 	}
+
 	/**
 	 * Gets an attribute from the IFD Handler.
 	 *
@@ -134,9 +71,10 @@ class Card {
 	 * @returns The attribute value response.
 	 * @throws {@link Err}
 	 */
-	attributeGet(id, outputBuffer) {
+	attributeGet(id: number, outputBuffer?: ArrayBuffer): Promise<Uint8Array> {
 		return this.#card.attributeGet(id, outputBuffer)
 	}
+
 	/**
 	 * Sets an attribute of the IFD Handler.
 	 *
@@ -146,9 +84,10 @@ class Card {
 	 *
 	 * @throws {@link Err}
 	 */
-	attributeSet(id, value) {
+	attributeSet(id: number, value: Uint8Array): Promise<void> {
 		return this.#card.attributeSet(id, value)
 	}
+
 	/**
 	 * Sends a command directly to the IFD Handler (reader driver).
 	 *
@@ -176,9 +115,14 @@ class Card {
 	 * @returns The response data from the reader.
 	 * @throws {@link Err}
 	 */
-	control(code, command, outputBuffer) {
+	control(
+		code: number,
+		command?: Uint8Array,
+		outputBuffer?: ArrayBuffer
+	): Promise<Uint8Array> {
 		return this.#card.control(code, command, outputBuffer)
 	}
+
 	/**
 	 * Closes the connection to the card, rendering this instance invalid.
 	 *
@@ -186,9 +130,10 @@ class Card {
 	 *
 	 * @throws {@link Err}
 	 */
-	disconnect(then) {
+	disconnect(then: CardDisposition): Promise<void> {
 		return this.#card.disconnect(then)
 	}
+
 	/**
 	 * The currently active card communication protocol.
 	 *
@@ -198,9 +143,10 @@ class Card {
 	 *
 	 * @throws {@link Err}
 	 */
-	protocol() {
+	protocol(): Protocol {
 		return this.#card.protocol()
 	}
+
 	/**
 	 * Attempts to re-establish a previously reset connection.
 	 *
@@ -219,16 +165,18 @@ class Card {
 	 *
 	 * @throws {@link Err}
 	 */
-	reconnect(mode, initAction) {
+	reconnect(mode: CardMode, initAction: CardDisposition): Promise<Protocol> {
 		return this.#card.reconnect(mode, initAction)
 	}
+
 	/**
 	 * The current state of the card.
 	 * @throws {@link Err}
 	 */
-	async state() {
+	async state(): Promise<CardState> {
 		return new CardState(await this.#card.state())
 	}
+
 	/**
 	 * Establishes a temporary {@link CardMode.EXCLUSIVE} connection to the card,
 	 * if originally connected with {@link CardMode.SHARED}, creating a lock for
@@ -261,9 +209,10 @@ class Card {
 	 * @returns A handle to the newly active transaction.
 	 * @throws {@link Err}
 	 */
-	transaction() {
+	transaction(): Promise<Transaction> {
 		return this.#card.transaction()
 	}
+
 	/**
 	 * Sends an [APDU](https://en.wikipedia.org/wiki/Smart_card_application_protocol_data_unit)
 	 * to the card.
@@ -298,9 +247,10 @@ class Card {
 	 * @returns The response data from the card.
 	 * @throws {@link Err}
 	 */
-	transmit(input, outputBuffer) {
+	transmit(input: Uint8Array, outputBuffer?: ArrayBuffer): Promise<Uint8Array> {
 		return this.#card.transmit(undefined, input, outputBuffer)
 	}
+
 	/**
 	 * Sends an [APDU](https://en.wikipedia.org/wiki/Smart_card_application_protocol_data_unit)
 	 * to the card with a specific protocol. Useful for {@link CardMode.DIRECT}
@@ -339,41 +289,50 @@ class Card {
 	 * @returns The response data from the card.
 	 * @throws {@link Err}
 	 */
-	transmitProtocol(protocol, input, outputBuffer) {
+	transmitProtocol(
+		protocol: Protocol,
+		input: Uint8Array,
+		outputBuffer?: ArrayBuffer
+	): Promise<Uint8Array> {
 		return this.#card.transmit(protocol, input, outputBuffer)
 	}
 }
-exports.Card = Card
+
 /**
  * The state of a connected smart card.
  */
-class CardState {
+export class CardState {
 	/**
 	 * The card [ATR](https://en.wikipedia.org/wiki/Answer_to_reset) value.
 	 */
-	atr
+	readonly atr: Uint8Array
+
 	/**
 	 * The currently active protocol.
 	 */
-	protocol
+	readonly protocol: Protocol
+
 	/**
 	 * Name of the reader containing the card.
 	 */
-	readerName
+	readonly readerName: string
+
 	/**
 	 * The current card status.
 	 */
-	status
-	constructor(state) {
+	readonly status: CardStatusFlags
+
+	constructor(state: pcsc.CardState) {
 		this.atr = state.atr
 		this.protocol = state.protocol
 		this.readerName = state.readerName
 		this.status = new CardStatusFlags(state.status)
 	}
+
 	/**
 	 * Human-friendly card info.
 	 */
-	toString() {
+	toString(): string {
 		return (
 			`[${this.readerName}]:\n` +
 			`    Protocol: ${pcsc.protocolString(this.protocol)}\n` +
@@ -382,46 +341,54 @@ class CardState {
 		)
 	}
 }
-exports.CardState = CardState
+
 /**
  * Bit flag representation of a card's status.
  */
-class CardStatusFlags {
+export class CardStatusFlags {
 	/**
 	 * The raw mask value of the status flags.
 	 */
-	raw
-	constructor(raw) {
+	readonly raw: number
+
+	constructor(raw: number) {
 		this.raw = raw
 	}
+
 	/**
 	 * `true` iff *all* the specified flags are set.
 	 */
-	has(...flags) {
+	has(...flags: readonly CardStatus[]): boolean {
 		let mask = 0
 		for (const flag of flags) mask |= flag
+
 		return (this.raw & mask) === mask
 	}
+
 	/**
 	 * `true` if *any* of the specified flags are set.
 	 */
-	hasAny(...flags) {
+	hasAny(...flags: readonly CardStatus[]): boolean {
 		let mask = 0
 		for (const flag of flags) mask |= flag
+
 		return (this.raw & mask) !== 0
 	}
+
 	/**
 	 * Human-readable names of the enabled flags, for logging/debugging.
 	 */
-	toString() {
-		return (0, exports.cardStatusString)(this.raw)
+	toString(): string {
+		return cardStatusString(this.raw)
 	}
 }
-exports.CardStatusFlags = CardStatusFlags
-function byteString(buf) {
+
+function byteString(buf: Uint8Array) {
 	const chunks = new Array(buf.length)
+
 	for (let i = 0; i < buf.length; i += 1) {
 		chunks[i] = buf[i].toString(16)
 	}
+
 	return chunks.join(", ")
 }

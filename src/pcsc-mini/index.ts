@@ -13,11 +13,18 @@ export {
 	protocolString,
 	type Transaction,
 } from "./card"
+
 export { Client, type Err, MAX_READERS } from "./client"
+
 export {
 	Reader,
 	ReaderStatus,
 	ReaderStatusFlags,
 	readerStatusString,
 } from "./reader"
+
+//
+// Re-exported for `typedoc`:
+//
+
 export { type EventEmitter } from "node:events"

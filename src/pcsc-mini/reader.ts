@@ -1,10 +1,14 @@
 import { EventEmitter } from "node:events"
+
 import * as pcsc from "./addon.node"
 import { type Err } from "./addon.node"
 import { Card, CardMode, Protocol } from "./card"
+
 export { type Err }
+
 export import ReaderStatus = pcsc.ReaderStatus
 export import readerStatusString = pcsc.readerStatusString
+
 /**
  * Represents a connected card reader. Provides an API for connecting to
  * inserted cards and an {@link EventEmitter} interface for reader/card state
@@ -48,12 +52,20 @@ export import readerStatusString = pcsc.readerStatusString
  * }
  * ```
  */
-export declare class Reader extends EventEmitter<{
+export class Reader extends EventEmitter<{
 	change: [ReaderStatusFlags, Uint8Array]
 	disconnect: []
 }> {
-	#private
-	constructor(client: pcsc.Client, name: string)
+	readonly #client: pcsc.Client
+	readonly #name: string
+
+	constructor(client: pcsc.Client, name: string) {
+		super()
+
+		this.#client = client
+		this.#name = name
+	}
+
 	/**
 	 * Establishes a new connection with an inserted card, if available, with the
 	 * specified protocol (or an appropriate one for the card, if unspecified).
@@ -73,7 +85,14 @@ export declare class Reader extends EventEmitter<{
 	 * @returns The newly connected card.
 	 * @throws {@link Err}
 	 */
-	connect(mode: CardMode, protocol?: Protocol): Promise<Card>
+	async connect(mode: CardMode, protocol?: Protocol): Promise<Card> {
+		try {
+			return new Card(await this.#client.connect(this.#name, mode, protocol))
+		} catch (err) {
+			return Promise.reject(err)
+		}
+	}
+
 	/**
 	 * The driver-provided reader name.
 	 *
@@ -83,29 +102,53 @@ export declare class Reader extends EventEmitter<{
 	 * > the assigned index is not guaranteed to be consistent across
 	 * > disconnects/reconnects.
 	 */
-	name(): string
+	name(): string {
+		return this.#name
+	}
+
 	/**
 	 * Alias of {@link name}.
 	 */
-	toString(): string
+	toString(): string {
+		return this.#name
+	}
 }
+
 /**
  * Bit flag representation of a card reader's status.
  */
-export declare class ReaderStatusFlags {
+export class ReaderStatusFlags {
 	/** The raw mask value of the status flags. */
 	readonly raw: number
-	constructor(raw: number)
+
+	constructor(raw: number) {
+		this.raw = raw
+	}
+
 	/**
 	 * `true` iff *all* the specified flags are set.
 	 */
-	has(...flags: readonly ReaderStatus[]): boolean
+	has(...flags: readonly ReaderStatus[]): boolean {
+		let mask = 0
+		for (const flag of flags) mask |= flag
+
+		return (this.raw & mask) === mask
+	}
+
 	/**
 	 * `true` if *any* of the specified flags are set.
 	 */
-	hasAny(...flags: readonly ReaderStatus[]): boolean
+	hasAny(...flags: readonly ReaderStatus[]): boolean {
+		let mask = 0
+		for (const flag of flags) mask |= flag
+
+		return (this.raw & mask) !== 0
+	}
+
 	/**
 	 * Human-readable names of the enabled flags, for logging/debugging.
 	 */
-	toString(): string
+	toString(): string {
+		return readerStatusString(this.raw)
+	}
 }
