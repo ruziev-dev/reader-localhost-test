@@ -12,7 +12,6 @@
 		"bun-compile": "bun bun-compile.ts"
 	},
 	"dependencies": {
-		"node-systray-v2": "github:Edgar-P-yan/node-systray-v2",
 		"ws": "^8.17.0"
 	},
 	"devDependencies": {

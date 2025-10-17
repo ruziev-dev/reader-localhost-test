@@ -7,11 +7,6 @@ const APP_NAME = "utis-nfc-reader"
 const platforms = [
 	{
 		target: "bun-windows-x64",
-		outfile: `${APP_NAME}-windows-arm64.exe`,
-		execArgv: ["TARGET_PLATFORM=win32-arm64-bun"],
-	},
-	{
-		target: "bun-windows-x64",
 		outfile: `${APP_NAME}-windows-x64.exe`,
 		execArgv: ["TARGET_PLATFORM=win32-x64-bun"],
 	},
@@ -19,6 +14,11 @@ const platforms = [
 		target: "bun-linux-x64",
 		outfile: `${APP_NAME}-linux-x64`,
 		execArgv: ["TARGET_PLATFORM=linux-x64-glibc"],
+	},
+	{
+		target: "bun-linux-arm64",
+		outfile: `${APP_NAME}-linux-arm64`,
+		execArgv: ["TARGET_PLATFORM=linux-arm64-glibc"],
 	},
 	{
 		target: "bun-darwin-arm64",

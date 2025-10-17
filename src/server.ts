@@ -1,3 +1,11 @@
+/* import {
+	CardDisposition,
+	CardMode,
+	Client,
+	controlCode,
+	Reader,
+	ReaderStatus,
+} from "pcsc-mini" */
 import { WebSocketServer } from "ws"
 import { Reader, ReaderStatus } from "./pcsc-mini/reader"
 import { Client } from "./pcsc-mini/client"
